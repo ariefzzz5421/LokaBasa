@@ -1,0 +1,28 @@
+:root {
+  --color-paper: #f8f9f5;
+  --color-surface: #ffffff;
+  --color-ink: #233e3a;
+  --color-muted: #536a61;
+  --color-accent: #19776a;
+  --color-accent-dark: #105e53;
+  --color-soft: #eaf2e9;
+  --color-line: #e5eae2;
+  --color-orange: #a54e2c;
+  --color-peach: #fff0e5;
+  --color-yellow: #f7e8b8;
+  --color-mint: #dfeee3;
+  --color-error: #a73539;
+  --color-error-soft: #fff0ee;
+  --color-success: #216948;
+  --color-shadow: #233e3a0a;
+  --color-cream: #fff7df;
+  --color-dark-surface: #143f39;
+  --font-display: "Plus Jakarta Sans", sans-serif;
+  --font-body: "Plus Jakarta Sans", sans-serif;
+  --radius-card: 22px;
+  --radius-button: 12px;
+  --space-page: clamp(20px, 3.1vw, 48px);
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur-fast: 180ms;
+}
+
