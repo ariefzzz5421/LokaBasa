@@ -32,21 +32,33 @@ const places = {
   papua: "Jayapura",
   medan: "Kota Medan",
 };
+const pathData = geoPath(projection).digits(2)(indonesia);
+const origins = Object.fromEntries(
+  Object.entries(points).map(([id, lonlat]) => [
+    id,
+    {
+      coordinates: lonlat,
+      position: projection(lonlat).map((n) => Math.round(n * 100) / 100),
+      place: places[id],
+    },
+  ]),
+);
 fs.writeFileSync(
   "data/geography.json",
-  JSON.stringify({
-    source: "Natural Earth, 1:50m via world-atlas 2.0.2",
-    url: "https://www.naturalearthdata.com/about/terms-of-use/",
-    path: geoPath(projection).digits(2)(indonesia),
-    points: Object.fromEntries(
-      Object.entries(points).map(([id, lonlat]) => [
-        id,
-        {
-          coordinates: lonlat,
-          position: projection(lonlat).map((n) => Math.round(n * 100) / 100),
-          place: places[id],
-        },
-      ]),
-    ),
-  }),
+  JSON.stringify(
+    {
+      source: "Natural Earth, 1:50m via world-atlas 2.0.2",
+      url: "https://www.naturalearthdata.com/about/terms-of-use/",
+      path: pathData,
+      points: origins,
+    },
+    null,
+    2,
+  ),
+);
+fs.writeFileSync("data/course-origins.json", JSON.stringify(origins, null, 2));
+fs.mkdirSync("public/maps", { recursive: true });
+fs.writeFileSync(
+  "public/maps/indonesia-mini.svg",
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 470"><path d="${pathData}" fill="#8ebaa2" stroke="#f7fbf4" stroke-width="4" stroke-linejoin="round"/></svg>`,
 );

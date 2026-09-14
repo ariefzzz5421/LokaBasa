@@ -1,9 +1,5 @@
 import type { Metadata } from "next";
-import "@fontsource/plus-jakarta-sans/400.css";
-import "@fontsource/plus-jakarta-sans/500.css";
-import "@fontsource/plus-jakarta-sans/600.css";
-import "@fontsource/plus-jakarta-sans/700.css";
-import "@fontsource/plus-jakarta-sans/800.css";
+import "@fontsource-variable/plus-jakarta-sans/wght.css";
 import "./globals.css";
 import { AuthProvider, AuthGate } from "@/lib/auth";
 import { ProgressProvider } from "@/lib/store";
@@ -23,6 +19,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id">
+      <head>
+        <link
+          rel="preconnect"
+          href="https://ojqgfcshtatdoxfeyxpj.supabase.co"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="dns-prefetch"
+          href="https://ojqgfcshtatdoxfeyxpj.supabase.co"
+        />
+      </head>
       <body>
         <a href="#main-content" className="skip-link">
           Lewati ke konten

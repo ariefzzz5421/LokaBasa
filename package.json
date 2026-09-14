@@ -10,7 +10,7 @@
     "test": "tsx --test tests/*.test.ts"
   },
   "dependencies": {
-    "@fontsource/plus-jakarta-sans": "latest",
+    "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
     "@supabase/supabase-js": "^2.116.0",
     "framer-motion": "latest",
     "lucide-react": "latest",

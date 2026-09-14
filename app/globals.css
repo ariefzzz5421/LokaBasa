@@ -1666,38 +1666,104 @@ details p {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 13px;
 }
+.course-card,
+.scenario-card,
+.phrase-card,
+.achievement-card,
+.media-credit,
+.onboard-courses > button {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 260px;
+}
 .onboard-courses > button {
   position: relative;
   background: var(--color-surface);
   border: 2px solid var(--color-line);
-  border-radius: 15px;
-  padding: 0 13px 0 0;
+  border-radius: 18px;
+  padding: 8px 44px 8px 8px;
   overflow: hidden;
   display: flex;
-  gap: 15px;
+  gap: 14px;
   align-items: center;
   text-align: left;
-  min-height: 88px;
+  min-height: 112px;
+  transition:
+    transform var(--dur-fast),
+    border-color var(--dur-fast),
+    box-shadow var(--dur-fast);
 }
-.onboard-courses > button > .landscape {
-  width: 94px;
-  align-self: stretch;
-  object-fit: cover;
-  height: 88px;
+.onboard-courses > button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--color-shadow);
+}
+.onboard-course-media {
+  position: relative;
+  width: 138px;
+  height: 96px;
   flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--color-soft);
+}
+.onboard-course-media .region-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.course-origin-preview {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  width: 62px;
+  height: 34px;
+  border: 1px solid #ffffffcc;
+  border-radius: 8px;
+  background: #f4faf6 url("/maps/indonesia-mini.svg") center / contain no-repeat;
+  box-shadow: 0 3px 10px #163e3529;
+}
+.course-origin-preview i {
+  position: absolute;
+  left: var(--origin-x);
+  top: var(--origin-y);
+  width: 7px;
+  height: 7px;
+  border: 2px solid white;
+  border-radius: 50%;
+  background: var(--color-orange);
+  box-shadow: 0 0 0 2px #b4652370;
+  transform: translate(-50%, -50%);
+}
+.onboard-course-copy {
+  min-width: 0;
+}
+.onboard-course-copy .eyebrow {
+  font-size: 7px;
+  letter-spacing: 1.2px;
+  margin-bottom: 1px;
 }
 .onboard-courses strong {
   display: block;
-  font-size: 15px;
+  font-size: 18px;
 }
 .onboard-courses small {
   display: block;
-  font-size: 9px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-accent);
+  margin-top: 3px;
+}
+.onboard-course-copy > span:last-child {
+  display: block;
+  max-width: 230px;
+  font-size: 8px;
+  line-height: 1.5;
   color: var(--color-muted);
-  margin-top: 4px;
+  margin-top: 3px;
 }
 .onboard-courses button > svg:last-child:not(.landscape) {
-  margin-left: auto;
+  position: absolute;
+  right: 13px;
+  top: 13px;
   color: var(--color-accent);
   flex-shrink: 0;
 }
@@ -1913,6 +1979,7 @@ details p {
   text-align: left;
   font-size: 12px;
   line-height: 1.6;
+  transform-origin: center;
 }
 .answer-options button:disabled {
   opacity: 1;
@@ -1964,6 +2031,30 @@ details p {
 }
 .answer-feedback.bad {
   background: var(--color-peach);
+}
+.lesson-action .button.advancing {
+  position: relative;
+  overflow: hidden;
+}
+.lesson-action .button.advancing::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 4px;
+  background: var(--color-yellow);
+  transform-origin: left;
+  animation: answer-advance 1.25s linear forwards;
+}
+.answer-feedback.bad + .lesson-action .button.advancing::after {
+  animation-duration: 1.9s;
+}
+@keyframes answer-advance {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
 .answer-feedback.bad > span {
   color: var(--color-orange);
@@ -3630,17 +3721,21 @@ select {
     gap: 11px;
   }
   .onboard-courses > button {
-    min-height: 76px;
+    min-height: 104px;
+    padding: 7px 39px 7px 7px;
   }
-  .onboard-courses > button > .landscape {
-    height: 76px;
-    width: 95px;
+  .onboard-course-media {
+    height: 90px;
+    width: 112px;
   }
   .onboard-courses strong {
     font-size: 16px;
   }
   .onboard-courses small {
-    font-size: 10px;
+    font-size: 9px;
+  }
+  .onboard-course-copy > span:last-child {
+    font-size: 7px;
   }
   .onboarding-bottom {
     align-items: stretch;
@@ -4543,5 +4638,9 @@ select {
 @media (prefers-reduced-motion: reduce) {
   .course-image .region-photo {
     transition: none;
+  }
+  .lesson-action .button.advancing::after {
+    animation: none;
+    transform: scaleX(1);
   }
 }

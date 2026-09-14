@@ -26,12 +26,10 @@ export class BrowserTTSProvider implements AudioProvider {
       }
       const synth = window.speechSynthesis;
       let utterance: SpeechSynthesisUtterance | null = null;
-      let voiceTimer: ReturnType<typeof setTimeout> | undefined,
-        playbackTimer: ReturnType<typeof setTimeout> | undefined;
+      let playbackTimer: ReturnType<typeof setTimeout> | undefined,
+        retriedWithoutVoice = false;
       const done = (error?: Error) => {
-        clearTimeout(voiceTimer);
         clearTimeout(playbackTimer);
-        synth.removeEventListener("voiceschanged", start);
         if (utterance) {
           utterance.onend = null;
           utterance.onerror = null;
@@ -41,29 +39,35 @@ export class BrowserTTSProvider implements AudioProvider {
         error ? reject(error) : resolve();
       };
       this.finish = done;
-      const start = () => {
-        if (utterance || !this.finish) return;
-        const voice = synth
-          .getVoices()
-          .find((v) => /^(id|in)(-|_|$)/i.test(v.lang));
-        if (!voice) return;
-        clearTimeout(voiceTimer);
-        synth.removeEventListener("voiceschanged", start);
+      const speak = (voice?: SpeechSynthesisVoice) => {
+        if (!this.finish) return;
         utterance = new SpeechSynthesisUtterance(p.text);
-        utterance.voice = voice;
-        utterance.lang = voice.lang;
+        if (voice) utterance.voice = voice;
+        utterance.lang = voice?.lang || "id-ID";
         utterance.rate = 0.8;
         utterance.onend = () => done();
-        utterance.onerror = (e) =>
+        utterance.onerror = (e) => {
+          if (
+            voice &&
+            !retriedWithoutVoice &&
+            ["voice-unavailable", "language-unavailable"].includes(e.error)
+          ) {
+            retriedWithoutVoice = true;
+            clearTimeout(playbackTimer);
+            utterance = null;
+            speak();
+            return;
+          }
           done(
             ["interrupted", "canceled"].includes(e.error)
               ? undefined
               : new Error(
                   e.error === "not-allowed"
-                    ? "Ketuk Dengarkan lagi untuk mengizinkan pemutaran suara."
-                    : "Suara perangkat gagal diputar. Coba lagi atau gunakan panduan teks.",
+                    ? "Browser memblokir suara. Ketuk Dengarkan sekali lagi."
+                    : "Suara perangkat gagal diputar. Gunakan panduan teks atau coba browser lain.",
                 ),
           );
+        };
         playbackTimer = setTimeout(
           () => {
             done(new Error("Pemutaran suara tidak merespons. Coba lagi."));
@@ -71,21 +75,17 @@ export class BrowserTTSProvider implements AudioProvider {
           },
           Math.max(20000, p.text.length * 400),
         );
-        synth.cancel();
-        synth.resume();
         synth.speak(utterance);
       };
-      synth.addEventListener("voiceschanged", start);
-      voiceTimer = setTimeout(() => {
-        start();
-        if (!utterance)
-          done(
-            new Error(
-              "Suara bahasa Indonesia belum tersedia di perangkat ini. Pasang suara Indonesia di pengaturan perangkat, lalu buka kembali halaman. Panduan pelafalan tetap bisa digunakan.",
-            ),
-          );
-      }, 2500);
-      start();
+      const voices = synth.getVoices();
+      const voice =
+        voices.find((v) => /^(id|in)(-|_)id$/i.test(v.lang)) ||
+        voices.find((v) => /^(id|in)(-|_|$)/i.test(v.lang));
+      synth.cancel();
+      synth.resume();
+      // Speaking immediately keeps the user gesture valid on iOS/Safari.
+      // If the voice list is still loading, lang=id-ID lets the browser choose.
+      speak(voice);
     });
   }
   stop() {
@@ -109,15 +109,7 @@ export class RecordedAudioProvider implements AudioProvider {
       }
       const audio = new Audio(p.audioUrl);
       this.audio = audio;
-      const timer = setTimeout(
-        () =>
-          done(
-            new Error(
-              "Rekaman terlalu lama dimuat. Periksa koneksi lalu coba lagi.",
-            ),
-          ),
-        30000,
-      );
+      let timer: ReturnType<typeof setTimeout>;
       const done = (error?: Error) => {
         clearTimeout(timer);
         audio.onended = null;
@@ -128,6 +120,15 @@ export class RecordedAudioProvider implements AudioProvider {
         if (active === this) active = null;
         error ? reject(error) : resolve();
       };
+      timer = setTimeout(
+        () =>
+          done(
+            new Error(
+              "Rekaman terlalu lama dimuat. Periksa koneksi lalu coba lagi.",
+            ),
+          ),
+        30000,
+      );
       this.finish = done;
       audio.onended = () => done();
       audio.onerror = () =>

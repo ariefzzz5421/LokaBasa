@@ -1,0 +1,37 @@
+{
+  "jawa": {
+    "coordinates": [110.37, -7.8],
+    "position": [341.4, 336.24],
+    "place": "Yogyakarta"
+  },
+  "sunda": {
+    "coordinates": [107.61, -6.91],
+    "position": [284.71, 317.81],
+    "place": "Bandung · Priangan"
+  },
+  "batak": {
+    "coordinates": [98.85, 2.62],
+    "position": [104.79, 121.71],
+    "place": "Danau Toba"
+  },
+  "ngapak": {
+    "coordinates": [109.24, -7.42],
+    "position": [318.19, 328.37],
+    "place": "Purwokerto · Banyumas"
+  },
+  "manado": {
+    "coordinates": [124.84, 1.47],
+    "position": [638.6, 145.35],
+    "place": "Manado"
+  },
+  "papua": {
+    "coordinates": [140.72, -2.53],
+    "position": [964.75, 227.52],
+    "place": "Jayapura"
+  },
+  "medan": {
+    "coordinates": [98.67, 3.59],
+    "position": [101.1, 101.76],
+    "place": "Kota Medan"
+  }
+}

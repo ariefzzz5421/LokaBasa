@@ -53,15 +53,37 @@ function ExerciseCard({
     [matched, setMatched] = useState<string[]>([]),
     [pairError, setPairError] = useState(""),
     [recorded, setRecorded] = useState(false),
-    [skipped, setSkipped] = useState(false);
-  const anyMismatch = useRef(false);
+    [skipped, setSkipped] = useState(false),
+    [advancing, setAdvancing] = useState(false);
+  const anyMismatch = useRef(false),
+    advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null),
+    continued = useRef(false),
+    answerResult = useRef({ correct: true, assessed: true });
+  useEffect(
+    () => () => {
+      if (advanceTimer.current) clearTimeout(advanceTimer.current);
+    },
+    [],
+  );
+  function continueNow() {
+    if (continued.current) return;
+    continued.current = true;
+    if (advanceTimer.current) clearTimeout(advanceTimer.current);
+    advanceTimer.current = null;
+    onAnswer(answerResult.current.correct, answerResult.current.assessed);
+  }
   function check() {
     let result = true;
     if ("options" in e) result = selected === e.answer;
     else if (e.type === "arrange")
       result = arranged.map((i) => e.words[i]).join(" ") === e.answer;
+    else if (e.type === "matching") result = !anyMismatch.current;
+    const assessed = !(e.type === "speaking" || reveal);
+    answerResult.current = { correct: result, assessed };
     setCorrect(result);
     setChecked(true);
+    setAdvancing(true);
+    advanceTimer.current = setTimeout(continueNow, result ? 1250 : 1900);
   }
   const canCheck =
     e.type === "speaking"
@@ -139,19 +161,28 @@ function ExerciseCard({
       {"options" in e && (
         <div className="answer-options">
           {e.options.map((option, i) => (
-            <button
+            <motion.button
               key={option}
               disabled={checked}
               className={`${selected === option ? "selected" : ""} ${checked && option === e.answer ? "correct" : ""} ${checked && selected === option && !correct ? "incorrect" : ""}`}
               onClick={() => setSelected(option)}
               aria-pressed={selected === option}
+              whileTap={{ scale: 0.98 }}
+              animate={
+                checked && option === e.answer
+                  ? { scale: [1, 1.035, 1] }
+                  : checked && selected === option && !correct
+                    ? { x: [0, -5, 5, -3, 3, 0] }
+                    : { scale: 1, x: 0 }
+              }
+              transition={{ duration: 0.38 }}
             >
               <span className="answer-letter">
                 {String.fromCharCode(65 + i)}
               </span>
               <span>{option}</span>
               {checked && option === e.answer && <Check size={21} />}
-            </button>
+            </motion.button>
           ))}
         </div>
       )}
@@ -285,21 +316,21 @@ function ExerciseCard({
             ? "Satu langkah lebih dekat."
             : "Pelan-pelan saja, kamu bisa."}
         </span>
-        <button
-          className="button"
+        <motion.button
+          className={`button ${advancing ? "advancing" : ""}`}
           disabled={!canCheck}
-          onClick={() =>
+          onClick={() => (checked ? continueNow() : check())}
+          aria-label={
             checked
-              ? onAnswer(
-                  e.type === "matching" ? !anyMismatch.current : correct,
-                  !(e.type === "speaking" || reveal),
-                )
-              : check()
+              ? "Lanjut sekarang, otomatis dalam sesaat"
+              : "Periksa jawaban"
           }
+          animate={advancing ? { scale: [1, 0.97, 1.02, 1] } : { scale: 1 }}
+          transition={{ duration: 0.42 }}
         >
-          {checked ? "Lanjut" : "Periksa"}
+          {checked ? "Lanjut sekarang" : "Periksa"}
           <ArrowRight size={18} />
-        </button>
+        </motion.button>
       </div>
     </>
   );

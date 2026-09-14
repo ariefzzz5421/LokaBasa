@@ -7,6 +7,8 @@ import { courses, getCourse } from "@/courses/catalog";
 import { useProgress } from "@/lib/store";
 import { Brand } from "@/components/shell";
 import { Mascot } from "@/components/illustrations";
+import { CourseOriginPreview } from "@/components/course-origin-preview";
+import origins from "@/data/course-origins.json";
 import { ProgressBar } from "./learning";
 export function Onboarding() {
   const router = useRouter(),
@@ -79,10 +81,17 @@ export function Onboarding() {
                 onClick={() => setSelected(x.id)}
                 aria-pressed={x.id === selected}
               >
-                <RegionImage variant={x.id} />
-                <div>
+                <div className="onboard-course-media">
+                  <RegionImage variant={x.id} compact />
+                  <CourseOriginPreview courseId={x.id} />
+                </div>
+                <div className="onboard-course-copy">
+                  <span className="eyebrow">BAHASA</span>
                   <strong>{x.name}</strong>
-                  <small>{x.dialect}</small>
+                  <small>{origins[x.id as keyof typeof origins].place}</small>
+                  <span>
+                    {x.nativeName} · {x.region}
+                  </span>
                 </div>
                 {x.id === selected && <Check size={20} />}
               </button>
@@ -156,7 +165,7 @@ export function Onboarding() {
         )}
         <div className="onboarding-bottom">
           <p>
-            <Compass size={17} /> Progres disimpan di perangkat ini.
+            <Compass size={17} /> Progres tersimpan aman di akunmu.
           </p>
           <button
             className="button"
