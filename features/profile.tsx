@@ -1,4 +1,8 @@
 "use client";
+import { Avatar, avatars } from "@/components/avatar";
+import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/lib/auth";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
   Download,
@@ -16,15 +20,16 @@ import { courses } from "@/courses/catalog";
 import { ProgressBar } from "./learning";
 import Link from "next/link";
 export function Profile() {
-  const { progress, update } = useProgress();
+  const { progress, update, syncing, error } = useProgress();
+  const { user } = useAuth();
+  const router = useRouter();
+  const [leaving, setLeaving] = useState(false);
+  const [logoutError, setLogoutError] = useState("");
   const [name, setName] = useState(progress.name),
     [saved, setSaved] = useState(false);
   const streak = streaks(progress.activityDates);
   function download() {
-    let raw = JSON.stringify(progress, null, 2);
-    try {
-      raw = localStorage.getItem("lokabasa.progress.v1") || raw;
-    } catch {}
+    const raw = JSON.stringify(progress, null, 2);
     const blob = new Blob([raw], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -46,9 +51,7 @@ export function Profile() {
         </button>
       </div>
       <div className="profile-banner">
-        <span className="profile-avatar">
-          {progress.name[0]?.toUpperCase()}
-        </span>
+        <Avatar id={progress.avatarId} large />
         <div>
           <h2>{progress.name}</h2>
           <p>Penjelajah Nusantara · Level {level(progress.xp)}</p>
@@ -137,6 +140,22 @@ export function Profile() {
         </section>
         <section className="panel">
           <h2>Atur perjalanan</h2>
+          <fieldset className="avatar-picker">
+            <legend>Teman perjalananmu</legend>
+            <div>
+              {avatars.map((a, i) => (
+                <button
+                  key={a}
+                  type="button"
+                  aria-label={a}
+                  aria-pressed={(progress.avatarId || 0) === i}
+                  onClick={() => update((p) => ({ ...p, avatarId: i }))}
+                >
+                  <Avatar id={i} />
+                </button>
+              ))}
+            </div>
+          </fieldset>
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -178,9 +197,33 @@ export function Profile() {
             </button>
           </form>
           <p className="muted">
-            Progres tersimpan hanya di browser ini. Menghapus data situs akan
-            menghapus progres. Unduh salinan untuk menyimpan catatanmu.
+            {syncing
+              ? "Menyimpan progres ke akun…"
+              : error
+                ? "Ada progres yang belum tersinkron. Unduh salinan sebelum keluar."
+                : "Progres dan avatar tersimpan di akunmu, dan dapat dilanjutkan dari perangkat lain."}
           </p>
+          <p className="muted">
+            Username: @
+            {user?.user_metadata?.username || user?.email?.split("@")[0]}
+          </p>
+          <button
+            className="button secondary"
+            disabled={syncing || !!error || leaving}
+            onClick={async () => {
+              setLeaving(true);
+              const { error } = await supabase.auth.signOut();
+              if (error) {
+                setLogoutError(
+                  "Belum bisa keluar. Periksa koneksi dan coba lagi.",
+                );
+                setLeaving(false);
+              } else router.replace("/masuk");
+            }}
+          >
+            {leaving ? "Keluar…" : "Keluar dari akun"}
+          </button>
+          {logoutError && <p role="alert">{logoutError}</p>}
           <Link href="/tentang" className="text-link">
             Materi, audio & privasi ↗
           </Link>

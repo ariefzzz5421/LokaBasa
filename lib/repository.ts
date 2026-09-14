@@ -4,7 +4,7 @@ export interface ProgressRepository {
   load(): UserProgress;
   save(progress: UserProgress): void;
 }
-function valid(p: UserProgress) {
+export function validProgress(p: UserProgress) {
   return (
     p.version === 1 &&
     typeof p.name === "string" &&
@@ -33,7 +33,7 @@ export class LocalProgressRepository implements ProgressRepository {
     if (!raw) return structuredClone(initialProgress);
     try {
       const p = JSON.parse(raw);
-      if (!valid(p)) throw new Error();
+      if (!validProgress(p)) throw new Error();
       return p;
     } catch {
       throw new Error(

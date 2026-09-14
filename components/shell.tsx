@@ -15,6 +15,7 @@ import {
 import { useEffect, useState, type ReactNode } from "react";
 import { useProgress } from "@/lib/store";
 import { streaks } from "@/lib/progress";
+import { Avatar } from "./avatar";
 import { Mascot } from "./illustrations";
 const nav = [
   { href: "/beranda", title: "Beranda", icon: Home },
@@ -38,7 +39,7 @@ export function Brand() {
 }
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname(),
-    { progress, ready, error } = useProgress();
+    { progress, ready, error, syncing, retry } = useProgress();
   const [offline, setOffline] = useState(false);
   useEffect(() => {
     const sync = () => setOffline(!navigator.onLine);
@@ -54,12 +55,12 @@ export function AppShell({ children }: { children: ReactNode }) {
     pathname.startsWith("/lesson") ||
     pathname === "/onboarding" ||
     pathname === "/latihan";
-  if (pathname === "/" || immersive)
+  if (["/", "/masuk", "/daftar"].includes(pathname) || immersive)
     return (
       <>
         {error && (
           <div className="global-notice" role="alert">
-            {error}
+            {error} <button onClick={retry}>Coba sinkron lagi</button>
           </div>
         )}
         {children}
@@ -98,9 +99,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </p>
         </div>
         <div className="sidebar-bottom">
-          <span className="avatar">
-            {progress.name[0]?.toUpperCase() || "P"}
-          </span>
+          <Avatar id={progress.avatarId} />
           <div>
             <strong>{progress.name}</strong>
             <small>Penjelajah Nusantara</small>
@@ -113,7 +112,10 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div className="app-body">
         <header className="topbar">
           <span className="breadcrumb">
-            Perjalanan kecil, cerita besar <span>✦</span>
+            {syncing
+              ? "Menyimpan perjalanan…"
+              : "Perjalanan kecil, cerita besar"}{" "}
+            <span>✦</span>
           </span>
           <div className="top-stats">
             <span className="streak">
@@ -125,14 +127,15 @@ export function AppShell({ children }: { children: ReactNode }) {
               {progress.xp} <small>XP</small>
             </span>
             <Link className="avatar" href="/profil" aria-label="Profil">
-              {progress.name[0]?.toUpperCase()}
+              <Avatar id={progress.avatarId} />
             </Link>
           </div>
         </header>
         {(offline || error) && (
           <div className="global-notice" role="status">
             {error ||
-              "Kamu sedang offline. Progres tersimpan di perangkat; beberapa halaman baru dan suara mungkin belum tersedia."}
+              "Kamu sedang offline. Progres sesi disimpan di perangkat dan akan dicoba sinkron kembali saat online."}
+            {error && <button onClick={retry}>Coba lagi</button>}
           </div>
         )}
         <main id="main-content" className="main-content">

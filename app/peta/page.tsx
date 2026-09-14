@@ -11,8 +11,8 @@ export default function Page() {
       </div>
       <IndonesiaMap />
       <p className="muted">
-        Peta ilustratif untuk navigasi belajar, bukan rujukan batas wilayah atau
-        persebaran bahasa.
+        Peta menggunakan data geografi Natural Earth. Penanda menunjukkan kota
+        atau kawasan utama kursus, bukan batas persebaran bahasa.
       </p>
     </>
   );

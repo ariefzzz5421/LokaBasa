@@ -5,6 +5,7 @@ import "@fontsource/plus-jakarta-sans/600.css";
 import "@fontsource/plus-jakarta-sans/700.css";
 import "@fontsource/plus-jakarta-sans/800.css";
 import "./globals.css";
+import { AuthProvider, AuthGate } from "@/lib/auth";
 import { ProgressProvider } from "@/lib/store";
 import { AppShell } from "@/components/shell";
 export const metadata: Metadata = {
@@ -26,9 +27,13 @@ export default function RootLayout({
         <a href="#main-content" className="skip-link">
           Lewati ke konten
         </a>
-        <ProgressProvider>
-          <AppShell>{children}</AppShell>
-        </ProgressProvider>
+        <AuthProvider>
+          <AuthGate>
+            <ProgressProvider>
+              <AppShell>{children}</AppShell>
+            </ProgressProvider>
+          </AuthGate>
+        </AuthProvider>
       </body>
     </html>
   );

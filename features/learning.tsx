@@ -1,4 +1,5 @@
 "use client";
+import { RegionImage } from "@/components/region-image";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -27,7 +28,7 @@ import {
   streaks,
   isUnlocked,
 } from "@/lib/progress";
-import { Landscape, Mascot } from "@/components/illustrations";
+import { Mascot } from "@/components/illustrations";
 import { AudioButton, SavePhrase } from "@/components/audio";
 import type { Course } from "@/types";
 export function ProgressBar({
@@ -60,7 +61,7 @@ export function CourseCard({ course }: { course: Course }) {
         className="course-image"
         aria-label={`Jelajahi bahasa ${course.name}`}
       >
-        <Landscape variant={course.id} />
+        <RegionImage variant={course.id} />
         <span className="course-region">{course.region}</span>
         <span className="course-arrow">
           <ArrowUpRight size={20} />
@@ -234,7 +235,7 @@ export function Dashboard() {
               </div>
             </div>
             <div className="continue-landscape">
-              <Landscape variant={c.id} />
+              <RegionImage variant={c.id} />
               <Mascot />
               <span className="mini-bubble">Ayo, kita mulai!</span>
             </div>
@@ -443,7 +444,7 @@ export function CoursePath({ course: c }: { course: Course }) {
             <strong>{percentage(progress, c)}%</strong>
           </div>
         </div>
-        <Landscape variant={c.id} />
+        <RegionImage variant={c.id} />
       </div>
       <div className="path-layout">
         <div className="learning-path">

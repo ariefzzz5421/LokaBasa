@@ -1,11 +1,12 @@
 "use client";
+import { RegionImage } from "@/components/region-image";
 import { useState } from "react";
 import { MessageCircle, ArrowRight, RotateCcw, Check, Mic } from "lucide-react";
 import { courses, getCourse } from "@/courses/catalog";
 import { scenarios } from "@/data/scenarios";
 import { useProgress } from "@/lib/store";
 import { review } from "@/lib/progress";
-import { Mascot, Landscape } from "@/components/illustrations";
+import { Mascot } from "@/components/illustrations";
 import { AudioButton, Recorder } from "@/components/audio";
 export function Conversation() {
   const { progress, update } = useProgress();
@@ -119,7 +120,7 @@ export function Conversation() {
       ) : (
         <div className="conversation-layout">
           <aside className="conversation-scene">
-            <Landscape variant={c.id} />
+            <RegionImage variant={c.id} />
             <Mascot />
             <div>
               <span className="eyebrow">

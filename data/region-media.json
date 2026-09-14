@@ -1,0 +1,65 @@
+{
+  "sunda": {
+    "src": "/regions/sunda.webp",
+    "alt": "Kebun teh di kawasan Bandung",
+    "author": "Missteddybear",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Kebun_teh_bandung.jpg",
+    "changes": "Dipotong 16:9, ukuran disesuaikan, dikonversi ke WebP."
+  },
+  "batak": {
+    "src": "/regions/batak.webp",
+    "alt": "Danau Toba, Sumatera Utara",
+    "author": "Vebyapsari",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:The_Supervolcano_of_Lake_Toba.jpg",
+    "changes": "Dipotong 16:9, ukuran disesuaikan, dikonversi ke WebP."
+  },
+  "ngapak": {
+    "src": "/regions/ngapak.webp",
+    "alt": "Baturraden, Banyumas",
+    "author": "Crisco 1492",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Baturraden_overview_from_ridge,_Purwokerto,_2015-03-23.jpg",
+    "changes": "Dipotong 16:9, ukuran disesuaikan, dikonversi ke WebP."
+  },
+  "jawa": {
+    "src": "/regions/jawa.webp",
+    "alt": "Tugu Yogyakarta",
+    "author": "Herusutimbul",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Tugu_Jogja_Landmark_Kota_Jogja.jpg",
+    "changes": "Dipotong 16:9, ukuran disesuaikan, dikonversi ke WebP."
+  },
+  "manado": {
+    "src": "/regions/manado.webp",
+    "alt": "Teluk Manado dan Pulau Bunaken",
+    "author": "Midori",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Manado_Bay_and_Bunaken_Island.JPG",
+    "changes": "Dipotong 16:9, ukuran disesuaikan, dikonversi ke WebP."
+  },
+  "papua": {
+    "src": "/regions/papua.webp",
+    "alt": "Kota Jayapura, Papua",
+    "author": "Nekomong",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Kota_Jayapura,_Papua.jpg",
+    "changes": "Dipotong 16:9, ukuran disesuaikan, dikonversi ke WebP."
+  },
+  "medan": {
+    "src": "/regions/medan.webp",
+    "alt": "Istana Maimun, Medan",
+    "author": "Anton Leddin",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Istana_Maimun,_Medan.jpg",
+    "changes": "Dipotong 16:9, ukuran disesuaikan, dikonversi ke WebP."
+  }
+}

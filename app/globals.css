@@ -4222,3 +4222,326 @@ select {
     white-space: nowrap;
   }
 }
+/* Regional photography, geographic map and account passport */
+.region-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  aspect-ratio: 16/9;
+}
+.course-image .region-photo {
+  transition: transform 0.4s ease;
+}
+.course-image:hover .region-photo {
+  transform: scale(1.04);
+}
+.animal-avatar {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-image: url("/avatars/nusantara.webp");
+  background-size: 400% 200%;
+  background-repeat: no-repeat;
+  background-color: #dbece4;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px #1e514c18;
+  vertical-align: middle;
+}
+.animal-avatar.large {
+  width: 112px;
+  height: 112px;
+  border-width: 4px;
+}
+.avatar:has(.animal-avatar) {
+  background: none;
+  padding: 0;
+}
+.avatar-picker {
+  border: 0;
+  padding: 0;
+  margin: 20px 0;
+}
+.avatar-picker legend {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.avatar-picker > div {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+.avatar-picker button {
+  min-height: 58px;
+  border-radius: 18px;
+  background: #f5f7f0;
+  border: 2px solid transparent;
+  padding: 6px;
+  cursor: pointer;
+}
+.avatar-picker button[aria-pressed="true"] {
+  border-color: #17796e;
+  background: #ddf0e7;
+}
+.avatar-picker .animal-avatar {
+  width: 52px;
+  height: 52px;
+}
+.geographic-map {
+  background: linear-gradient(150deg, #edf5ed, #e0eee9);
+  padding: clamp(16px, 3vw, 32px);
+}
+.map-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: #527269;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+}
+.map-caption span:last-child {
+  font-weight: 500;
+  letter-spacing: 0;
+}
+.map-ocean {
+  font-size: 10px;
+  letter-spacing: 2px;
+  fill: #51766a;
+}
+.marker-leader {
+  fill: none;
+  stroke: #648f80;
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+.marker-halo {
+  fill: #237f692b;
+}
+.marker-dot {
+  fill: #17796e;
+  stroke: white;
+  stroke-width: 2;
+}
+.geo-label {
+  cursor: pointer;
+  outline: none;
+}
+.geo-label rect {
+  fill: #fff;
+  stroke: #accdbb;
+  stroke-width: 1;
+}
+.geo-label text {
+  fill: #22544a;
+  font-weight: 800;
+  font-size: 13px;
+  pointer-events: none;
+}
+.geo-marker.active .geo-label rect {
+  fill: #17796e;
+  stroke: #17796e;
+}
+.geo-marker.active text {
+  fill: #fff;
+}
+.geo-marker.active .marker-halo {
+  fill: #d0a34b5c;
+}
+.geo-label:focus-visible rect {
+  stroke: #b46523;
+  stroke-width: 4;
+}
+.geographic-map .map-detail {
+  display: grid;
+  grid-template-columns: minmax(160px, 0.8fr) minmax(0, 1.4fr);
+  gap: 24px;
+  align-items: center;
+  padding: 20px;
+}
+.map-photo {
+  border-radius: 20px;
+  overflow: hidden;
+  align-self: stretch;
+  min-height: 180px;
+}
+.map-photo .region-photo {
+  height: 100%;
+  object-fit: cover;
+}
+.geographic-map .map-detail h3 {
+  margin: 10px 0 4px;
+}
+.geographic-map .map-detail .button {
+  margin-top: 12px;
+}
+.map-footnote {
+  font-size: 11px;
+  line-height: 1.7;
+  color: #527269;
+  margin: 14px 4px 0;
+}
+.map-footnote a {
+  font-weight: 700;
+  text-decoration: underline;
+}
+.media-credit {
+  overflow: hidden;
+}
+.media-credit .region-photo {
+  border-radius: 16px;
+  height: auto;
+}
+.media-credit h2 {
+  font-size: 20px;
+  margin-top: 20px;
+}
+.media-credit a {
+  text-decoration: underline;
+}
+.auth-page {
+  min-height: 100dvh;
+  padding: 32px 20px;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(ellipse at top, #e0f0e3 0, transparent 65%), #f7f8f2;
+}
+.auth-card {
+  width: min(100%, 480px);
+  background: white;
+  border: 1px solid #e0e8dc;
+  padding: clamp(24px, 5vw, 44px);
+  border-radius: 32px;
+  box-shadow: 0 24px 80px #244e4110;
+}
+.auth-card .brand {
+  justify-content: center;
+}
+.auth-welcome {
+  text-align: center;
+  margin: 28px 0;
+}
+.auth-welcome .animal-avatar {
+  display: block;
+  margin: 0 auto 20px;
+}
+.auth-welcome .eyebrow {
+  font-size: 10px;
+}
+.auth-welcome h1 {
+  font-size: clamp(27px, 5vw, 35px);
+  line-height: 1.2;
+  margin: 12px 0;
+}
+.auth-welcome p {
+  font-size: 14px;
+  color: #59716a;
+  line-height: 1.7;
+}
+.password-field {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.password-field input {
+  padding-right: 52px;
+  width: 100%;
+}
+.password-field button {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+}
+.field small {
+  font-size: 11px;
+  font-weight: 400;
+  color: #59716a;
+}
+.auth-submit {
+  width: 100%;
+  margin-top: 12px;
+}
+.auth-switch {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 24px;
+}
+.auth-switch a {
+  color: #17796e;
+  font-weight: 800;
+}
+.auth-privacy {
+  text-align: center;
+  color: #59716a;
+  font-size: 11px;
+  line-height: 1.8;
+  margin-top: 18px;
+}
+.auth-privacy a {
+  text-decoration: underline;
+}
+.global-notice button {
+  margin-left: 12px;
+  min-height: 36px;
+  border: 1px solid currentColor;
+  border-radius: 8px;
+  padding: 6px 12px;
+  background: white;
+  cursor: pointer;
+}
+@media (max-width: 600px) {
+  .geographic-map .map-detail {
+    grid-template-columns: 1fr;
+    padding: 14px;
+    gap: 16px;
+  }
+  .map-photo {
+    min-height: 0;
+    aspect-ratio: 16/8;
+  }
+  .map-caption {
+    font-size: 9px;
+    letter-spacing: 0.6px;
+  }
+  .map-caption span:last-child {
+    display: none;
+  }
+  .geographic-map .map-tabs {
+    gap: 6px;
+  }
+  .geographic-map .map-tabs button {
+    min-height: 44px;
+    padding: 8px 12px;
+  }
+  .map-ocean {
+    font-size: 12px;
+  }
+  .geo-label text {
+    font-size: 15px;
+  }
+  .profile-banner {
+    flex-wrap: wrap;
+  }
+  .auth-page {
+    padding: 16px 12px;
+  }
+  .auth-card {
+    border-radius: 24px;
+  }
+  .avatar-picker button {
+    padding: 4px;
+  }
+  .avatar-picker .animal-avatar {
+    width: 46px;
+    height: 46px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .course-image .region-photo {
+    transition: none;
+  }
+}

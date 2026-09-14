@@ -1,11 +1,12 @@
 "use client";
+import { RegionImage } from "@/components/region-image";
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowRight, ArrowLeft, Check, Compass } from "lucide-react";
 import { courses, getCourse } from "@/courses/catalog";
 import { useProgress } from "@/lib/store";
 import { Brand } from "@/components/shell";
-import { Landscape, Mascot } from "@/components/illustrations";
+import { Mascot } from "@/components/illustrations";
 import { ProgressBar } from "./learning";
 export function Onboarding() {
   const router = useRouter(),
@@ -78,7 +79,7 @@ export function Onboarding() {
                 onClick={() => setSelected(x.id)}
                 aria-pressed={x.id === selected}
               >
-                <Landscape variant={x.id} />
+                <RegionImage variant={x.id} />
                 <div>
                   <strong>{x.name}</strong>
                   <small>{x.dialect}</small>
@@ -137,7 +138,7 @@ export function Onboarding() {
         )}
         {step === 3 && (
           <div className="passport">
-            <Landscape variant={c.id} />
+            <RegionImage variant={c.id} />
             <Mascot />
             <div>
               <span className="eyebrow">DESTINASI PERTAMA</span>

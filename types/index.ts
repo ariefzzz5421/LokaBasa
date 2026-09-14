@@ -88,6 +88,7 @@ export interface SpeakingAttempt {
   duration: number;
 }
 export interface UserProgress {
+  avatarId?: number;
   version: 1;
   name: string;
   onboarded: boolean;

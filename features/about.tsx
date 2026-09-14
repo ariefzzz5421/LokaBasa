@@ -43,17 +43,23 @@ export default function About() {
         <p>
           Mikrofon baru diakses setelah kamu memilih Mulai rekam. Audio rekaman
           tidak diunggah atau disimpan permanen. Hanya waktu, durasi, dan
-          identitas ungkapan latihan dicatat di progres lokal. Tidak ada skor
+          identitas ungkapan latihan dicatat di progres akun. Tidak ada skor
           pelafalan atau pengenalan suara otomatis.
         </p>
         <h2>Privasi & penyimpanan</h2>
         <p>
-          Versi ini memakai localStorage tanpa akun, pelacakan analitik, atau
-          sinkronisasi antarperangkat. Nama panggilan, progres, ulasan, dan
-          favorit disimpan di browser yang kamu gunakan. Progres tidak
-          terenkripsi; hindari memasukkan data sensitif. Gunakan fitur unduh di
-          profil untuk menyimpan salinan. Penghapusan data situs melalui
-          pengaturan browser juga menghapus progres.
+          Akun memakai username dan password melalui Supabase Auth. Password
+          ditangani oleh layanan autentikasi, bukan disimpan di tabel profil.
+          Username dipetakan ke alamat internal yang tidak dipakai untuk
+          berkirim email. Nama panggilan, avatar, progres, ulasan, dan favorit
+          disimpan di akun; aturan database membatasi akses kepada pemiliknya.
+          Token sesi dan salinan perubahan yang belum tersinkron disimpan di
+          browser. Rekaman mikrofon tidak diunggah. Tidak ada pelacakan analitik
+          tambahan. Keluar setelah memakai perangkat bersama. Gunakan fitur
+          unduh di profil untuk menyimpan salinan.
+        </p>
+        <p>
+          <a href="/kredit">Kredit foto daerah, peta & avatar ↗</a>
         </p>
         <h2>Perkembangan berikutnya</h2>
         <p>

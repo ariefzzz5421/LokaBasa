@@ -8,8 +8,16 @@ export function AudioButton({ phrase }: { phrase: Phrase }) {
   const [playing, setPlaying] = useState(false),
     [error, setError] = useState("");
   const provider = useRef<AudioProvider | null>(null);
-  useEffect(() => () => provider.current?.stop(), []);
+  const playbackId = useRef(0);
+  useEffect(
+    () => () => {
+      playbackId.current++;
+      provider.current?.stop();
+    },
+    [phrase.id],
+  );
   async function play() {
+    const id = ++playbackId.current;
     if (playing) {
       provider.current?.stop();
       setPlaying(false);
@@ -21,9 +29,9 @@ export function AudioButton({ phrase }: { phrase: Phrase }) {
     try {
       await provider.current.play(phrase);
     } catch (e) {
-      setError((e as Error).message);
+      if (id === playbackId.current) setError((e as Error).message);
     } finally {
-      setPlaying(false);
+      if (id === playbackId.current) setPlaying(false);
     }
   }
   return (
@@ -97,11 +105,13 @@ export function Recorder({
     stream = useRef<MediaStream | null>(null),
     timer = useRef<ReturnType<typeof setTimeout> | null>(null),
     active = useRef(true),
-    urlRef = useRef("");
+    urlRef = useRef(""),
+    requestId = useRef(0);
   useEffect(() => {
     active.current = true;
     return () => {
       active.current = false;
+      requestId.current++;
       if (timer.current) clearTimeout(timer.current);
       recorder.current?.state === "recording" && recorder.current.stop();
       stream.current?.getTracks().forEach((t) => t.stop());
@@ -109,6 +119,7 @@ export function Recorder({
     };
   }, []);
   async function start() {
+    const attempt = ++requestId.current;
     setError("");
     if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
       setState("error");
@@ -120,7 +131,7 @@ export function Recorder({
     setState("requesting");
     try {
       const media = await navigator.mediaDevices.getUserMedia({ audio: true });
-      if (!active.current) {
+      if (!active.current || attempt !== requestId.current) {
         media.getTracks().forEach((t) => t.stop());
         return;
       }
@@ -132,10 +143,20 @@ export function Recorder({
       rec.ondataavailable = (e) => {
         if (e.data.size) chunks.push(e.data);
       };
+      let failed = false;
+      rec.onerror = () => {
+        failed = true;
+        media.getTracks().forEach((t) => t.stop());
+        if (timer.current) clearTimeout(timer.current);
+        if (active.current) {
+          setState("error");
+          setError("Rekaman terputus. Periksa mikrofon lalu coba lagi.");
+        }
+      };
       rec.onstop = () => {
         media.getTracks().forEach((t) => t.stop());
         if (timer.current) clearTimeout(timer.current);
-        if (!active.current) return;
+        if (!active.current || failed) return;
         const duration = (Date.now() - started) / 1000;
         if (duration < 0.5 || !chunks.length) {
           setState("error");
@@ -170,6 +191,7 @@ export function Recorder({
         30000,
       );
     } catch (e) {
+      if (!active.current || attempt !== requestId.current) return;
       stream.current?.getTracks().forEach((t) => t.stop());
       setState("error");
       setError(
@@ -197,6 +219,17 @@ export function Recorder({
               ? "Rekam ulang"
               : "Mulai rekam"}
       </button>
+      {state === "requesting" && (
+        <button
+          className="text-link"
+          onClick={() => {
+            requestId.current++;
+            setState("idle");
+          }}
+        >
+          Batalkan permintaan mikrofon
+        </button>
+      )}
       <p className="muted">Ketuk untuk mulai / berhenti · maksimal 30 detik</p>
       {url && <audio aria-label="Putar rekaman suaramu" controls src={url} />}
       <small>
